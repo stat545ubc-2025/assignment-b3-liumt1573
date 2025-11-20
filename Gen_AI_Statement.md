@@ -1,6 +1,5 @@
 ## A statement on GEN AI usage
 
-
 ### GEN AI prompts
 
 For the purpose of this assessment, I have elected to not use generative AI. Instead, I have consulted the following resources:
