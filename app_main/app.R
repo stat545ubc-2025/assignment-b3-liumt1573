@@ -48,15 +48,11 @@ ui <- fluidPage(
                         max = 7.9,
                         value = c(5.1, 6.2), post = "cm"
                         ),
-          checkboxInput("sorting_YN", 
-                        "Sort table in ascending order by \'Sepal.Length\'? ",
-                        value = FALSE
-                        ),
           checkboxInput("prob_YN", 
                         "Show density as opposed to frequency?",
                         value = FALSE
                         ),
-          downloadButton('download',"Download the table")
+          downloadButton('download',"Download the Table")
           ),
 
         # Show a plot of the generated distribution
@@ -84,12 +80,11 @@ server <- function(input, output) {
     output$table_out <- renderTable({
       table_data <- filter(main_data, Sepal.Length <= input$table_spec[2] & 
                                        Sepal.Length >= input$table_spec[1])
-      ifelse(input$sorting_YN, table_data <- arrange(table_data, Sepal.Length), table_data <- table_data)
       table_data
     })
     
     downloadable <- reactive({
-      filter(arrange(main_data, Sepal.Length), Sepal.Length <= input$table_spec[2] & 
+      filter(main_data, Sepal.Length <= input$table_spec[2] & 
                Sepal.Length >= input$table_spec[1])
     })
     
