@@ -55,7 +55,8 @@ ui <- fluidPage(
           checkboxInput("prob_YN", 
                         "Show density as opposed to frequency?",
                         value = FALSE
-                        )
+                        ),
+          downloadButton('download',"Download the table")
           ),
 
         # Show a plot of the generated distribution
@@ -66,7 +67,8 @@ ui <- fluidPage(
            strong("Below is the output table"),
            tableOutput("table_out")
         )
-    )    
+        
+    )
 )
 
 # Define server logic required to draw a histogram
@@ -84,6 +86,18 @@ server <- function(input, output) {
                                        Sepal.Length >= input$table_spec[1])
       ifelse(input$sorting_YN, table_data <- arrange(table_data, Sepal.Length), table_data <- table_data)
       table_data
+    })
+    
+    downloadable <- reactive({
+      filter(arrange(main_data, Sepal.Length), Sepal.Length <= input$table_spec[2] & 
+               Sepal.Length >= input$table_spec[1])
+    })
+    
+    output$dto <- renderDataTable(downloadable())
+    output$download <- downloadHandler(
+      filename = function(){"iris_app.csv"}, 
+      content = function(fname){
+        write.csv(downloadable(), fname)
     })
 }
 
